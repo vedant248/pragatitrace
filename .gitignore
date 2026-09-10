@@ -1,0 +1,8 @@
+.streamlit/secrets.toml
+__pycache__/
+*.pyc
+test.py
+pipeline.py
+report.py
+join_logic.py
+document.txt
