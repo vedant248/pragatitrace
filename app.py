@@ -119,6 +119,50 @@ if "citizen_reports" not in st.session_state:
 if "sanctioned_works" not in st.session_state:
     st.session_state.sanctioned_works = []
 
+DEMO_CITIZEN_REPORTS = [
+    {"issue_type": "road", "location_mentioned": "Achalpuram", "severity": "high",
+     "summary": "Main road in Achalpuram has severe potholes, accident risk."},
+    {"issue_type": "road", "location_mentioned": "Achalpuram", "severity": "medium",
+     "summary": "Road near the school in Achalpuram needs repair."},
+    {"issue_type": "water", "location_mentioned": "Samiyam village", "severity": "high",
+     "summary": "No piped water supply in Samiyam village for two weeks."},
+    {"issue_type": "road", "location_mentioned": "Kulichar", "severity": "medium",
+     "summary": "Road connecting Kulichar to Melparasalur is damaged after rains."},
+    {"issue_type": "sanitation", "location_mentioned": "Puthur", "severity": "low",
+     "summary": "Garbage collection irregular in Puthur AD Colony."},
+]
+
+DEMO_SANCTIONED_WORKS = [
+    {"sl_no": 1, "work_name_full": "Improvements to Alakudi - Kaduvetti road Km.0/0-1/0",
+     "location": "Alakudi Kaduvetti", "administrative_sanction": 1975000.0,
+     "completion_report_amount": 2030206.0, "variance_pct": 2.8,
+     "flag": "OVER_SANCTION - verify physical scope"},
+    {"sl_no": 2, "work_name_full": "Improvements to Samiyam village Road Km.0/0-1/185",
+     "location": "Samiyam village", "administrative_sanction": 1750000.0,
+     "completion_report_amount": 1712588.65, "variance_pct": -2.14, "flag": "within tolerance"},
+    {"sl_no": 3, "work_name_full": "Improvements to Achalpuram-Agaram road Km.0/0-1/0",
+     "location": "Achalpuram Agaram", "administrative_sanction": 1694000.0,
+     "completion_report_amount": 1622748.23, "variance_pct": -4.21, "flag": "within tolerance"},
+    {"sl_no": 4, "work_name_full": "Improvements to Puthur AD Colony road Km.0/0-1/0",
+     "location": "Puthur", "administrative_sanction": 1578000.0,
+     "completion_report_amount": 1494696.46, "variance_pct": -5.28, "flag": "within tolerance"},
+    {"sl_no": 5, "work_name_full": "Improvements to Kulichar Melparasalur road Km.0/0-3/0",
+     "location": "Kulichar", "administrative_sanction": 5869000.0,
+     "completion_report_amount": 5723134.17, "variance_pct": -2.49, "flag": "within tolerance"},
+]
+
+with st.sidebar:
+    st.markdown("---")
+    demo_mode = st.checkbox("🧪 Load sample district data", value=False)
+    if demo_mode:
+        st.session_state.citizen_reports = DEMO_CITIZEN_REPORTS.copy()
+        st.session_state.sanctioned_works = DEMO_SANCTIONED_WORKS.copy()
+        st.caption("Showing sample data from a real PMGSY package (Nagapattinam).")
+    elif not demo_mode and st.session_state.get("_demo_was_on"):
+        st.session_state.citizen_reports = []
+        st.session_state.sanctioned_works = []
+    st.session_state["_demo_was_on"] = demo_mode
+
 
 # ============================================================
 # TIER 1: deterministic number extraction (proven)
@@ -393,19 +437,65 @@ with tab1:
                 except Exception as e:
                     st.error(f"Something went wrong: {e}")
 
+def extract_text_from_upload(uploaded_file):
+    """
+    Extracts raw text from an uploaded PDF or image, before the existing
+    Tier 1 (regex numbers) + Tier 2 (Gemini names) pipeline runs on it.
+    PDFs use pdfplumber (deterministic, no AI risk on text extraction).
+    Images use Gemini vision for OCR, since there's no deterministic
+    alternative for scanned/photographed documents.
+    """
+    name = uploaded_file.name.lower()
+    if name.endswith(".pdf"):
+        import pdfplumber
+        text_parts = []
+        with pdfplumber.open(uploaded_file) as pdf:
+            for page in pdf.pages:
+                page_text = page.extract_text()
+                if page_text:
+                    text_parts.append(page_text)
+        return "\n".join(text_parts)
+    else:
+        # Image: use Gemini vision to read the text
+        import tempfile
+        with tempfile.NamedTemporaryFile(delete=False, suffix="." + name.split(".")[-1]) as tmp:
+            tmp.write(uploaded_file.read())
+            tmp_path = tmp.name
+        client = genai.Client(api_key=API_KEY)
+        uploaded = client.files.upload(file=tmp_path)
+        response = client.models.generate_content(
+            model="gemini-3.6-flash",
+            contents=["Extract ALL text from this image exactly as it appears, preserving line breaks. Return only the raw text, nothing else.", uploaded]
+        )
+        return response.text
+
+
 with tab2:
     st.subheader("Check a government sanction order for leakage")
-    st.caption("Paste text from a PMGSY or JJM sanction order PDF.")
+    st.caption("Upload a sanction order PDF or photo, or paste the text directly.")
 
-    doc_text = st.text_area(
+    uploaded_doc = st.file_uploader("Upload PDF or image", type=["pdf", "png", "jpg", "jpeg"])
+    st.markdown("**— or paste text —**")
+    doc_text_pasted = st.text_area(
         "Document text:",
-        height=220,
+        height=180,
         placeholder="Paste the extracted text of a sanction order...",
         label_visibility="collapsed"
     )
+
     if st.button("Analyze Document", type="primary"):
-        if not doc_text.strip():
-            st.warning("Please paste a document first.")
+        doc_text = None
+        if uploaded_doc is not None:
+            with st.spinner("Reading uploaded document..."):
+                try:
+                    doc_text = extract_text_from_upload(uploaded_doc)
+                except Exception as e:
+                    st.error(f"Couldn't read the file: {e}")
+        elif doc_text_pasted.strip():
+            doc_text = doc_text_pasted
+
+        if not doc_text or not doc_text.strip():
+            st.warning("Please upload a document or paste text first.")
         else:
             with st.spinner("Running Tier 1 (deterministic extraction) + Tier 2 (Gemini)..."):
                 try:
