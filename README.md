@@ -93,50 +93,6 @@ The app ships with a **"Load sample district data"** toggle that loads:
 This is sample data for demonstration, clearly marked as such in the UI
 and in the data provenance field of every record.
 
-## Getting started
-
-### 1. Clone and install
-
-```bash
-git clone https://github.com/vedant248/pragatitrace.git
-cd pragatitrace
-python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-### 2. Add your Gemini API key
-
-Get a free key from [Google AI Studio](https://aistudio.google.com/apikey),
-then create `.streamlit/secrets.toml` (already git-ignored):
-
-```toml
-GEMINI_API_KEY = "your-key-here"
-```
-
-A template is provided at `.streamlit/secrets.toml.example` — copy it and
-fill in your key:
-
-```bash
-cp .streamlit/secrets.toml.example .streamlit/secrets.toml
-```
-
-### 3. Run it
-
-```bash
-streamlit run app.py
-```
-
-### 4. (Optional) Verify your API key/model access
-
-```bash
-python check_gemini.py
-```
-
-This checks which Gemini model variants your key currently has access to
-and gives a plain-English reason (bad key, quota exhausted, model not
-available) for any that fail.
-
 ## Project structure
 
 ```
