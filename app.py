@@ -19,7 +19,9 @@ from universal_ingest import process_document
 from india_geo import detect_state, STATE_POPULATION_2011
 import csv
 
-st.set_page_config(page_title="PragatiTrace", layout="wide", page_icon="🛣️", initial_sidebar_state="auto")
+st.set_page_config(page_title="PragatiTrace", layout="wide", initial_sidebar_state="auto")
+# NOTE: page_icon intentionally omitted -- needs a real favicon file before launch,
+# per project rule against emoji icons. Set page_icon="path/to/favicon.png" once ready.
 
 try:
     API_KEY = st.secrets["GEMINI_API_KEY"]
@@ -43,7 +45,7 @@ def show_error(e):
     """Friendly error for users; technical detail tucked away and logged."""
     print(f"[error] {type(e).__name__}: {e}")
     if isinstance(e, RuntimeError):
-        st.error(str(e))  # our own user-readable messages (quota, session limit)
+        st.error(str(e)) # our own user-readable messages (quota, session limit)
     else:
         st.error("Something went wrong while processing this. Please try again in a moment.")
         with st.expander("Technical details"):
@@ -58,10 +60,7 @@ html, body, [class*="css"] { font-family: 'Inter', 'Noto Sans Devanagari', 'Noto
 h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif !important; letter-spacing: -0.01em; }
 
 .stApp {
-    background:
-        radial-gradient(circle at 10% -10%, rgba(74,157,255,0.08) 0%, transparent 40%),
-        radial-gradient(circle at 90% 10%, rgba(167,139,250,0.06) 0%, transparent 40%),
-        #0a0d16;
+    background: #0a0d16;
 }
 
 section[data-testid="stSidebar"] {
@@ -70,16 +69,13 @@ section[data-testid="stSidebar"] {
 
 /* ---------- Hero ---------- */
 .hero {
-    background: linear-gradient(135deg, #17223f 0%, #101a30 55%, #0b0e16 100%);
-    border-radius: 22px; padding: 44px 48px; margin-bottom: 32px;
+    background: #10141f;
+    border-radius: 8px; padding: 44px 48px; margin-bottom: 32px;
     border: 1px solid rgba(255,255,255,0.07);
-    box-shadow: 0 20px 50px -15px rgba(0,0,0,0.5);
-    animation: fadeIn 0.5s ease-out;
 }
 .hero-title {
     font-family: 'Space Grotesk', sans-serif; font-size: 42px; font-weight: 700;
-    background: linear-gradient(90deg, #7ab8ff, #a78bfa);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    color: #7ab8ff;
     margin: 0; line-height: 1.1;
 }
 .hero-sub { color: #9ca3af; font-size: 16px; margin-top: 10px; max-width: 660px; line-height: 1.55; }
@@ -87,15 +83,14 @@ section[data-testid="stSidebar"] {
 .pill {
     display: inline-flex; align-items: center; background: rgba(255,255,255,0.04);
     border: 1px solid rgba(255,255,255,0.1);
-    color: #c7d2fe; padding: 7px 15px; border-radius: 20px; font-size: 13px;
-    font-weight: 500; transition: all 0.35s ease;
+    color: #c7d2fe; padding: 7px 15px; border-radius: 6px; font-size: 13px;
+    font-weight: 500;
 }
-.pill:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
 
 
 /* ---------- Cards ---------- */
 .report-card, .flag-card {
-    background: linear-gradient(160deg, #161d2e 0%, #10141f 100%);
+    background: #131826;
     border-radius: 16px; padding: 20px 24px; margin: 12px 0;
     border: 1px solid rgba(255,255,255,0.06);
     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
@@ -111,7 +106,7 @@ section[data-testid="stSidebar"] {
 
 /* ---------- Metric boxes ---------- */
 .metric-box {
-    background: linear-gradient(160deg, #161d2e 0%, #10141f 100%);
+    background: #131826;
     border-radius: 16px; padding: 24px 20px; text-align: center; margin: 6px 0;
     border: 1px solid rgba(255,255,255,0.07);
     transition: border-color 0.3s ease;
@@ -128,7 +123,7 @@ section[data-testid="stSidebar"] {
 
 /* ---------- Badges ---------- */
 .badge {
-    display: inline-block; padding: 4px 11px; border-radius: 20px;
+    display: inline-block; padding: 4px 11px; border-radius: 4px;
     font-size: 11px; font-weight: 700; letter-spacing: 0.3px; margin-right: 6px;
 }
 .badge-high { background: rgba(255,90,90,0.15); color: #ff8a8a; border: 1px solid rgba(255,90,90,0.25); }
@@ -181,12 +176,11 @@ section[data-testid="stSidebar"] {
     font-weight: 600 !important;
 }
 .stButton > button[kind="primary"] {
-    background: linear-gradient(120deg, #4a7dff, #8a5cf6) !important;
+    background: #4a7dff !important;
     border: none !important;
 }
 .stButton > button:hover, .stDownloadButton > button:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 20px rgba(74,138,255,0.3) !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
 }
 .stDownloadButton > button { border-radius: 10px !important; transition: all 0.35s ease !important; }
 
@@ -195,10 +189,6 @@ section[data-testid="stSidebar"] {
 div[data-baseweb="textarea"], div[data-baseweb="base-input"] { background: #121724 !important; border-radius: 12px !important; border: 1px solid rgba(255,255,255,0.12) !important; }
 div[data-baseweb="textarea"]:focus-within, div[data-baseweb="base-input"]:focus-within { border-color: #7ab8ff !important; box-shadow: 0 0 0 3px rgba(122,184,255,0.15) !important; }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-}
 
 .logo-mark { display: inline-flex; align-items: center; gap: 10px; }
 .block-container, [data-testid="stMainBlockContainer"] { max-width: 1240px; margin-left: auto; margin-right: auto; padding-top: 3rem; }
@@ -219,10 +209,10 @@ LOGO_SVG = """<svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.
 <circle cx="20" cy="22" r="1.8" fill="#7ab8ff"/>
 <defs>
 <linearGradient id="p" x1="9" y1="8" x2="20" y2="22">
-<stop offset="0%" stop-color="#7ab8ff"/><stop offset="100%" stop-color="#a78bfa"/>
+<stop offset="0%" stop-color="#7ab8ff"/><stop offset="100%" stop-color="#7ab8ff"/>
 </linearGradient>
 <linearGradient id="ring" x1="0" y1="0" x2="30" y2="30">
-<stop offset="0%" stop-color="#4a9eff" stop-opacity="0.5"/><stop offset="100%" stop-color="#a78bfa" stop-opacity="0.5"/>
+<stop offset="0%" stop-color="#4a9eff" stop-opacity="0.5"/><stop offset="100%" stop-color="#7ab8ff" stop-opacity="0.5"/>
 </linearGradient>
 </defs>
 </svg>"""
@@ -231,8 +221,8 @@ WORDMARK_HTML = (
     '<span style="font-family:\'Space Grotesk\',sans-serif; font-weight:700; '
     'letter-spacing:-0.02em; font-size:19px;">'
     '<span style="color:#f1f5f9;">Pragati</span>'
-    '<span style="background:linear-gradient(90deg,#7ab8ff,#a78bfa);'
-    '-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Trace</span>'
+    '<span style="color:#7ab8ff;'
+    '">Trace</span>'
     '</span>'
 )
 
@@ -240,17 +230,17 @@ with st.sidebar:
     st.markdown(f'<div class="logo-mark">{LOGO_SVG}{WORDMARK_HTML}</div>', unsafe_allow_html=True)
     st.caption("Built for Indian infrastructure accountability")
     st.markdown("---")
-    st.markdown("**How it works**\n\n1. 📣 Citizens report a problem — by voice or text, in their own language\n2. 🔍 The system reads real government sanction papers and checks the numbers\n3. 🔗 It matches the two, so you can see if a funded project was actually finished")
+    st.markdown("**How it works**\n\n1. Citizens report a problem - by voice or text, in their own language\n2. The system reads real government sanction papers and checks the numbers\n3. It matches the two, so you can see if a funded project was actually finished")
     st.markdown("---")
     st.caption(
-        "🔒 **Data handling:** citizen reports (including voice) are stored "
+        " **Data handling:** citizen reports (including voice) are stored "
         "in this app's local database. Voice recordings and documents are sent to Google's Gemini API for processing. No "
-        "consent flow or retention policy is built yet — a real deployment "
+        "consent flow or retention policy is built yet - a real deployment "
         "handling citizen complaints against officials would need one."
     )
     st.markdown("---")
-    st.caption("Built for Build with AI: Code for Communities — Google Cloud Hackathon")
-    st.caption("Powered by Gemini")
+    st.caption("Built for Build with AI: Code for Communities - Google Cloud Hackathon")
+
 
 hero_html = (
     '<div class="hero">'
@@ -258,10 +248,10 @@ hero_html = (
     '<p class="hero-sub">Citizens report infrastructure problems. We check them against real '
     'government spending records to see if the money was actually spent where it should have been.</p>'
     '<div class="hero-pills">'
-    '<span class="pill">🎙️ Voice and text, any language</span>'
-    '<span class="pill">🤖 Real Gemini AI</span>'
-    '<span class="pill">📄 Real government sanction documents</span>'
-    '<span class="pill">📍 Tested on Tamil Nadu &amp; Himachal Pradesh · state-aware for all 36 states/UTs</span>'
+    '<span class="pill">Voice and text, any language</span>'
+    '<span class="pill">Real Gemini AI</span>'
+    '<span class="pill">Real government sanction documents</span>'
+    '<span class="pill">Tested on Tamil Nadu &amp; Himachal Pradesh · state-aware for all 36 states/UTs</span>'
     '</div></div>'
 )
 st.markdown(hero_html, unsafe_allow_html=True)
@@ -332,7 +322,7 @@ def init_db():
         try:
             conn.execute(stmt)
         except sqlite3.OperationalError:
-            pass  # column already exists
+            pass # column already exists
     conn.commit()
     conn.close()
 
@@ -355,7 +345,7 @@ def log_processed_document(detected_shape, tier_used, summary=""):
         conn.commit()
         conn.close()
     except Exception:
-        pass  # logging must never break the main analysis flow
+        pass # logging must never break the main analysis flow
 
 
 def get_document_coverage_stats():
@@ -420,7 +410,7 @@ def save_cached_ocr(file_hash, extracted_text):
         conn.commit()
         conn.close()
     except Exception:
-        pass  # caching must never break the main extraction flow
+        pass # caching must never break the main extraction flow
 
 
 def insert_citizen_report(report, is_demo=False):
@@ -500,7 +490,7 @@ def insert_field_verification(project, claimed, observed, note="", verified_by="
     for attempt in (1, 2):
         try:
             conn = get_connection()
-            conn.execute("BEGIN IMMEDIATE")  # lock so two officers can't fork the chain
+            conn.execute("BEGIN IMMEDIATE") # lock so two officers can't fork the chain
             prev = conn.execute(
                 "SELECT entry_hash FROM field_verifications ORDER BY id DESC LIMIT 1"
             ).fetchone()
@@ -523,7 +513,7 @@ def insert_field_verification(project, claimed, observed, note="", verified_by="
                 pass
             if attempt == 2:
                 raise
-            init_db()  # table missing/outdated (app was updated while running) -> create it and retry
+            init_db() # table missing/outdated (app was updated while running) -> create it and retry
 
 
 def verify_field_verification_chain():
@@ -541,9 +531,9 @@ def verify_field_verification_chain():
     expected_prev = "0" * 64
     for r in rows:
         if r["entry_hash"] is None:
-            continue  # entries logged before this feature existed have no hash to check
+            continue # entries logged before this feature existed have no hash to check
         if (r["prev_hash"] or "0" * 64) != expected_prev:
-            ok = False  # a row was deleted, inserted or reordered
+            ok = False # a row was deleted, inserted or reordered
             break
         expected_prev = r["entry_hash"]
         entry = {"project": r["project"], "claimed": r["claimed_pct"], "observed": r["observed_pct"],
@@ -575,7 +565,7 @@ def sync_from_db():
     st.session_state.sanctioned_works = get_all_sanctioned_works()
 
 
-DB_SCHEMA_VERSION = 4  # bump when tables change so a running app re-creates them
+DB_SCHEMA_VERSION = 4 # bump when tables change so a running app re-creates them
 
 
 @st.cache_resource
@@ -671,7 +661,7 @@ with st.sidebar:
     st.markdown("---")
     if "demo_mode" not in st.session_state:
         st.session_state["demo_mode"] = demo_data_already_in_db()
-    demo_mode = st.checkbox("🧪 Load sample district data", key="demo_mode")
+    demo_mode = st.checkbox("Load sample district data", key="demo_mode")
     if demo_mode and not demo_data_already_in_db():
         for report in DEMO_CITIZEN_REPORTS:
             insert_citizen_report(report, is_demo=True)
@@ -688,13 +678,13 @@ with st.sidebar:
         sync_from_db()
 
     st.markdown("---")
-    st.markdown("**💾 Save / Load Session**")
+    st.markdown("** Save / Load Session**")
     st.caption("Data is stored in a local database that survives page refreshes. Export gives you a portable backup you can move between deployments.")
     session_export = json.dumps({
         "citizen_reports": st.session_state.citizen_reports,
         "sanctioned_works": st.session_state.sanctioned_works,
     }, indent=2)
-    st.download_button("📥 Export session (.json)", data=session_export,
+    st.download_button("Export session (.json)", data=session_export,
                         file_name="pragatitrace_session.json", mime="application/json")
     _cols = ["work_name_full", "state", "location", "administrative_sanction", "completion_report_amount",
              "variance_pct", "risk_level", "flag", "data_provenance"]
@@ -704,10 +694,10 @@ with st.sidebar:
     _cw.writerow(_cols)
     for _w in st.session_state.sanctioned_works:
         _cw.writerow([_safe(_w.get(c)) for c in _cols])
-    st.download_button("📊 Export works (.csv)", data=_buf.getvalue().encode("utf-8-sig"),
+    st.download_button("Export works (.csv)", data=_buf.getvalue().encode("utf-8-sig"),
                         file_name="pragatitrace_works.csv", mime="text/csv")
 
-    uploaded_session = st.file_uploader("📤 Import session", type=["json"], key="session_uploader")
+    uploaded_session = st.file_uploader("Import session", type=["json"], key="session_uploader")
     _import_id = getattr(uploaded_session, "file_id", None) or (uploaded_session.name if uploaded_session is not None else None)
     if uploaded_session is not None and st.session_state.get("_last_import") != _import_id:
         try:
@@ -738,15 +728,22 @@ def extract_work_rows(text):
     )
     rows = []
     skipped = 0
+    last_sl_no = 0
     for line in text.split("\n"):
         line = line.strip()
         m = row_pattern.match(line)
         if not m:
             continue
         sl_no = int(m.group(1))
-        if sl_no > 10:
+        # Real sanction tables can legitimately run past 10 rows, so there's no
+        # fixed ceiling. Instead, guard against false-positive regex matches
+        # (random digit-led lines elsewhere in the doc) by requiring sl_no to
+        # roughly continue the sequence we've already built, and capping at a
+        # generous upper bound that no real single-package table should hit.
+        if sl_no > 500 or (rows and sl_no <= last_sl_no):
             skipped += 1
             continue
+        last_sl_no = sl_no
         rows.append({
             "sl_no": sl_no,
             "work_name_partial": m.group(2).strip(),
@@ -813,7 +810,7 @@ def verify_stages_against_text(stages, doc_text, tolerance=0.01):
 
 
 # When the main model is overloaded (503 "high demand"), automatically try these instead.
-FALLBACK_MODELS = ["gemini-3.5-flash", "gemini-3.5-flash-lite"]
+FALLBACK_MODELS = ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-2.5-flash"]
 
 
 class _FailoverModels:
@@ -827,8 +824,12 @@ class _FailoverModels:
                 return self._inner.generate_content(model=m, contents=contents, **kw)
             except Exception as e:
                 msg = str(e)
+                # Also fail over on "model not found" (404/NOT_FOUND), not just
+                # overload -- a wrong/renamed model string should never hard-crash
+                # the app when a working fallback model is available.
                 overloaded = ("503" in msg or "UNAVAILABLE" in msg or "high demand" in msg
-                              or "overloaded" in msg.lower())
+                              or "overloaded" in msg.lower()
+                              or "404" in msg or "NOT_FOUND" in msg or "not found" in msg.lower())
                 if not overloaded or i == len(chain) - 1:
                     raise
                 print(f"[failover] {m} is overloaded -> trying {chain[i + 1]}")
@@ -857,7 +858,7 @@ def get_gemini_client():
     try:
         return _FailoverClient(genai.Client(api_key=API_KEY, http_options=types.HttpOptions(timeout=90_000)))
     except Exception:
-        return _FailoverClient(genai.Client(api_key=API_KEY))  # older SDK without per-call timeouts
+        return _FailoverClient(genai.Client(api_key=API_KEY)) # older SDK without per-call timeouts
 
 
 @st.cache_resource
@@ -874,8 +875,8 @@ def check_map_dependencies_available():
     pay that cost at most ONCE per app run, never once per interaction.
     """
     try:
-        import pandas  # noqa: F401
-        import pydeck  # noqa: F401
+        import pandas # noqa: F401
+        import pydeck # noqa: F401
         return True
     except Exception as e:
         print(f"[check_map_dependencies_available] map disabled: {e}")
@@ -904,8 +905,8 @@ def _is_transient(e):
     return any(x in m for x in TRANSIENT_MARKERS)
 
 
-REPORT_RATE_LIMIT = 6            # max complaints
-REPORT_RATE_WINDOW_SECONDS = 600  # per this many seconds, per browser session
+REPORT_RATE_LIMIT = 6 # max complaints
+REPORT_RATE_WINDOW_SECONDS = 600 # per this many seconds, per browser session
 
 
 def _check_report_rate_limit():
@@ -1421,19 +1422,19 @@ def show_kv(d):
 def render_report_card(result):
     sev = (result.get("severity") or "low").lower()
     badge_class = {"high": "badge-high", "medium": "badge-medium", "low": "badge-low"}.get(sev, "badge-low")
-    icon = {"road": "🛣️", "water": "💧", "electricity": "⚡", "sanitation": "🧹"}.get(result.get("issue_type"), "📍")
+    icon = {"road": "", "water": "", "electricity": "", "sanitation": ""}.get(result.get("issue_type"), "")
 
     transcript_part = f'<p style="color:#9ca3af; font-style:italic; margin:6px 0;">"{escape(str(result["transcript"]))}"</p>' if result.get("transcript") else ""
 
-    lang_badge = f'<span class="badge" style="background:#1e293b;color:#c4b5fd;">🗣️ {escape(str(result["language"]))}</span>' if result.get("language") else ""
-    ack_part = f'<p style="color:#5fe396; font-size:13px; margin:6px 0 0 0;">✅ {escape(str(result["acknowledgement"]))}</p>' if result.get("acknowledgement") else ""
+    lang_badge = f'<span class="badge" style="background:#1e293b;color:#c4b5fd;"> {escape(str(result["language"]))}</span>' if result.get("language") else ""
+    ack_part = f'<p style="color:#5fe396; font-size:13px; margin:6px 0 0 0;"> {escape(str(result["acknowledgement"]))}</p>' if result.get("acknowledgement") else ""
     html = (
         f'<div class="report-card">'
         f'<span class="badge {badge_class}">{escape(sev.upper())} PRIORITY</span>'
         f'<span class="badge" style="background:#1e293b;color:#93c5fd;">{icon} {escape(str(result.get("issue_type") or "?")).upper()}</span>'
         f'{lang_badge}{transcript_part}{ack_part}'
         f'<p style="font-size:16px; margin:8px 0 4px 0;"><b>{escape(str(result.get("summary") or ""))}</b></p>'
-        f'<p style="color:#9ca3af; font-size:13px; margin:0;">📍 {escape(str(result.get("location_mentioned") or "Location not detected"))}</p>'
+        f'<p style="color:#9ca3af; font-size:13px; margin:0;"> {escape(str(result.get("location_mentioned") or "Location not detected"))}</p>'
         f'</div>'
     )
     st.markdown(html, unsafe_allow_html=True)
@@ -1442,29 +1443,29 @@ def render_report_card(result):
 def render_work_card(r):
     risk = r.get("risk_level") or "LOW"
     risk_colors = {
-        "CRITICAL": ("#ff4b4b", "flag-red", "🔴"),
-        "HIGH": ("#ff8c42", "flag-red", "🟠"),
-        "MEDIUM": ("#ffc078", "flag-red", "🟡"),
-        "LOW": ("#21c55d", "flag-green", "🟢"),
-        "UNKNOWN": ("#9ca3af", "flag-red", "⚪"),
+        "CRITICAL": ("#ff4b4b", "flag-red", ""),
+        "HIGH": ("#ff8c42", "flag-red", ""),
+        "MEDIUM": ("#ffc078", "flag-red", ""),
+        "LOW": ("#21c55d", "flag-green", ""),
+        "UNKNOWN": ("#9ca3af", "flag-red", ""),
     }
     color, card_class, icon = risk_colors.get(risk, risk_colors["LOW"])
     is_narrative = r.get("source_type") == "narrative_escalation"
     first_label = "First sanction" if is_narrative else "Sanctioned"
     last_label = "Latest revision" if is_narrative else "Completion"
     type_note = (
-        f'<p style="margin:0 0 4px 0; color:#7ab8ff; font-size:12px;">📄 Detected via narrative analysis '
-        f'(non-tabular document) — comparing sanction revision stages, not a completion report.</p>'
+        f'<p style="margin:0 0 4px 0; color:#7ab8ff; font-size:12px;"> Detected via narrative analysis '
+        f'(non-tabular document) - comparing sanction revision stages, not a completion report.</p>'
         if is_narrative else ""
     )
-    provenance_note = ""  # internal pipeline detail (which tier extracted this) -- not shown to end users;
+    provenance_note = "" # internal pipeline detail (which tier extracted this) -- not shown to end users;
     # still stored on the record and included in the CSV export for anyone auditing the data source.
     verified_flag = r.get("amounts_verified_in_text")
     verification_note = ""
     if verified_flag is True:
-        verification_note = '<p style="margin:0 0 4px 0; color:#21c55d; font-size:12px;">✅ Amounts independently confirmed present in source text (regex check).</p>'
+        verification_note = '<p style="margin:0 0 4px 0; color:#21c55d; font-size:12px;"> Amounts independently confirmed present in source text (regex check).</p>'
     elif verified_flag is False:
-        verification_note = '<p style="margin:0 0 4px 0; color:#ffa45c; font-size:13px; font-weight:600;">⚠️ Some amounts NOT independently confirmed in source text — verify before trusting this result.</p>'
+        verification_note = '<p style="margin:0 0 4px 0; color:#ffa45c; font-size:13px; font-weight:600;"> Some amounts NOT independently confirmed in source text - verify before trusting this result.</p>'
 
     html = (
         f'<div class="flag-card {card_class}" style="border-left-color:{color};">'
@@ -1476,7 +1477,7 @@ def render_work_card(r):
         f'<p style="margin:0; color:#9ca3af; font-size:14px;">'
         f'{first_label}: ₹{inr((r.get("administrative_sanction") or 0), 2)} &nbsp;|&nbsp; '
         f'{last_label}: ₹{inr((r.get("completion_report_amount") or 0), 2)} &nbsp;|&nbsp; '
-        f'Variance: {(str(r.get("variance_pct")) + "%") if r.get("variance_pct") is not None else "—"}'
+        f'Variance: {(str(r.get("variance_pct")) + "%") if r.get("variance_pct") is not None else "-"}'
         f'</p></div>'
     )
     st.markdown(html, unsafe_allow_html=True)
@@ -1502,13 +1503,13 @@ def render_hotspot_card(h):
     priority_badge = {"HIGH": "badge-high", "MEDIUM": "badge-medium", "LOW": "badge-low"}.get(priority, "badge-low")
     _top_issue, _top_n = _dominant_issue_corroboration(h.get("reports") or [])
     _corrob_badge = (
-        f'<span class="badge" style="background:rgba(46,204,113,.15);color:#5fe396;border:1px solid rgba(46,204,113,.3);">✅ CORROBORATED · {_top_n} {escape(_top_issue.upper())} REPORTS</span>'
+        f'<span class="badge" style="background:rgba(46,204,113,.15);color:#5fe396;border:1px solid rgba(46,204,113,.3);"> CORROBORATED · {_top_n} {escape(_top_issue.upper())} REPORTS</span>'
         if _top_n >= 2 else ""
     )
     html = (
         f'<div class="report-card">'
         f'<span class="badge {priority_badge}">{priority} PRIORITY</span>'
-        f'<span class="badge" style="background:#1e293b;color:#93c5fd;">📍 {h["report_count"]} REPORT{"S" if h["report_count"] != 1 else ""}</span>'
+        f'<span class="badge" style="background:#1e293b;color:#93c5fd;"> {h["report_count"]} REPORT{"S" if h["report_count"] != 1 else ""}</span>'
         f'{_corrob_badge}'
         f'<p style="font-size:16px; margin:8px 0 4px 0;"><b>{escape(str(h["location"]))}</b></p>'
         f'<p style="color:#9ca3af; font-size:13px; margin:0;">'
@@ -1542,7 +1543,7 @@ def inr(n, d=0):
     try:
         n = float(n)
     except (TypeError, ValueError):
-        return "—"
+        return "-"
     neg = n < 0
     s = f"{abs(n):.{d}f}"
     whole, _, frac = s.partition(".")
@@ -1591,10 +1592,10 @@ def render_state_coverage(works):
         d["works"] += 1
         d["high"] += 1 if str(w.get("risk_level") or "").upper() == "HIGH" else 0
     known = [k for k in by if k in STATE_POPULATION_2011]
-    with st.expander(f"🗺️ India coverage: {len(known)} of {len(STATE_POPULATION_2011)} states/UTs in this analysis"):
+    with st.expander(f"India coverage: {len(known)} of {len(STATE_POPULATION_2011)} states/UTs in this analysis"):
         st.caption("State is detected from the document text. Population is the Census 2011 total for the whole state: an upper bound on communities in scope, not people directly affected.")
         st.table([{"State/UT": k, "Works": v["works"], "High-risk": v["high"],
-                   "Population (2011)": inr(STATE_POPULATION_2011.get(k, 0)) if k in STATE_POPULATION_2011 else "—"}
+                   "Population (2011)": inr(STATE_POPULATION_2011.get(k, 0)) if k in STATE_POPULATION_2011 else "-"}
                   for k, v in sorted(by.items())])
 
 
@@ -1611,13 +1612,16 @@ def estimate_population_in_scope(sanctioned_works):
 
 
 
-tab1, tab2, tab3, tab4 = st.tabs(["📣 Report an Issue", "🔍 Check a Sanction Order", "📊 Dashboard", "🔎 Field Verification"])
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+    "Report an Issue", "Check a Sanction Order", "Dashboard", "Field Verification",
+    "Privacy Policy", "Terms and Conditions",
+])
 
 with tab1:
     st.subheader("Report an infrastructure issue")
     st.caption("Speak or type in any Indian language (Hindi, Marathi, Tamil, Bengali, Telugu, Kannada, Malayalam, Gujarati, Punjabi, Odia, Urdu and more). Gemini transcribes, translates, classifies, and replies in your language.")
 
-    audio_input = st.audio_input("🎙️ Record your complaint")
+    audio_input = st.audio_input("Record your complaint")
     if audio_input is not None:
         if st.button("Submit Voice Report", type="primary"):
             if _check_report_rate_limit():
@@ -1631,7 +1635,7 @@ with tab1:
                     except Exception as e:
                         show_error(e)
 
-    st.markdown("**— or type instead —**")
+    st.markdown("**- or type instead -**")
     complaint = st.text_area(
         "Describe the issue:",
         placeholder="Sir humare gaon Achalpuram mein road bahut kharab hai...",
@@ -1658,12 +1662,12 @@ with tab1:
         _lr = st.session_state["last_report"]
         _last_result, _last_msg = _lr[0], _lr[1]
         _last_code = _lr[2] if len(_lr) > 2 else None
-        st.success("✅ Report received and saved." + (f" Your reference: **{_last_code}** — save this to check its status later." if _last_code else ""))
+        st.success("Report received and saved." + (f"Your reference: **{_last_code}** - save this to check its status later." if _last_code else ""))
         render_report_card(_last_result)
         if _last_msg:
-            st.info(f"🔗 **Cross-check:** {_last_msg}")
+            st.info(f" **Cross-check:** {_last_msg}")
 
-    with st.expander("🔎 Track a complaint by reference code"):
+    with st.expander("Track a complaint by reference code"):
         _lookup = st.text_input("Reference code (e.g. PT-0007)", key="track_code_input")
         if _lookup:
             _found = get_citizen_report_by_code(_lookup)
@@ -1723,7 +1727,7 @@ def _ocr_pdf_parallel(file_bytes):
     try:
         from pypdf import PdfReader, PdfWriter
     except ImportError:
-        st.warning("Scanned PDFs are much faster with 'pypdf'. Run:  pip install pypdf  then restart the app. Using the slower single-request method for now.")
+        st.warning("Scanned PDFs are much faster with 'pypdf'. Run: pip install pypdf then restart the app. Using the slower single-request method for now.")
         return None
     from concurrent.futures import ThreadPoolExecutor, as_completed
     try:
@@ -1747,12 +1751,12 @@ def _ocr_pdf_parallel(file_bytes):
         return None
     client = get_ocr_client()
     for _ in chunks:
-        _budget()  # session_state must only be touched from the main thread
+        _budget() # session_state must only be touched from the main thread
 
     def work(item):
         start, data = item
         part = types.Part.from_bytes(data=data, mime_type="application/pdf")
-        prompts = [OCR_PROMPT, OCR_PARAPHRASE_PROMPT]  # 2nd: avoids RECITATION blocks on published documents
+        prompts = [OCR_PROMPT, OCR_PARAPHRASE_PROMPT] # 2nd: avoids RECITATION blocks on published documents
         for prompt in prompts:
             for attempt in range(1, 4):
                 try:
@@ -1766,12 +1770,12 @@ def _ocr_pdf_parallel(file_bytes):
                         t = ""
                     if t:
                         return start, t
-                    break  # empty -> try the paraphrase prompt
+                    break # empty -> try the paraphrase prompt
                 except Exception as e:
                     if _is_quota(e):
                         raise RuntimeError(QUOTA_MSG) from e
                     if _OCR_TUNING["thinking"] and not _is_transient(e):
-                        _OCR_TUNING["thinking"] = False  # model rejected the setting -> retry without it
+                        _OCR_TUNING["thinking"] = False # model rejected the setting -> retry without it
                         continue
                     if attempt == 3 or not _is_transient(e):
                         print(f"[ocr] chunk at page {start + 1} failed: {e}")
@@ -1785,7 +1789,7 @@ def _ocr_pdf_parallel(file_bytes):
         futures = [pool.submit(work, c) for c in chunks]
         done = 0
         for f in as_completed(futures):
-            start, text = f.result()  # raises the friendly quota error if that happened
+            start, text = f.result() # raises the friendly quota error if that happened
             results[start] = text
             done += 1
             bar.progress(done / len(chunks), text=f"Read {done} of {len(chunks)} parts...")
@@ -1815,7 +1819,7 @@ def extract_text_from_upload(uploaded_file):
     file_hash = hashlib.sha256(file_bytes).hexdigest()
     cached_text = get_cached_ocr(file_hash)
     if cached_text:
-        st.caption("⚡ Recognized this exact file from a previous run — reused the cached extraction instead of calling Gemini's OCR again.")
+        st.caption("Recognized this exact file from a previous run - reused the cached extraction instead of calling Gemini's OCR again.")
         return cached_text
 
     if name.endswith(".pdf"):
@@ -1929,7 +1933,7 @@ def extract_text_from_upload(uploaded_file):
                     )
                     if attempt < max_retries and is_transient:
                         import time as _t
-                        _t.sleep(3 * attempt)  # backoff: 3s, 6s, ...
+                        _t.sleep(3 * attempt) # backoff: 3s, 6s, ...
                         continue
                     if attempt < max_retries:
                         import time as _t
@@ -2028,7 +2032,7 @@ with tab2:
 
     uploaded_doc = st.file_uploader("Upload PDF or image", type=["pdf", "png", "jpg", "jpeg"])
     st.caption("PDFs and images up to 20MB.")
-    st.markdown("**— or paste text —**")
+    st.markdown("**- or paste text -**")
     doc_text_pasted = st.text_area(
         "Document text:",
         height=180,
@@ -2085,7 +2089,7 @@ with tab2:
                         n_flagged = sum(1 for r in newly_inserted if "OVER_SANCTION" in (r.get("flag") or ""))
                         if st.session_state.get("skipped_table_rows"):
                             st.warning(f"{st.session_state['skipped_table_rows']} further table row(s) numbered above 10 were not analyzed (this parser reads the first 10 works).")
-                        st.success(f"✅ Extracted {len(newly_inserted)} works — {n_flagged} flagged for review.")
+                        st.success(f"Extracted {len(newly_inserted)} works - {n_flagged} flagged for review.")
                         log_processed_document(
                             "single_project_variance", "tier1_regex",
                             f"{len(newly_inserted)} works extracted, {n_flagged} flagged."
@@ -2094,7 +2098,7 @@ with tab2:
                         for r in newly_inserted:
                             render_work_card(r)
 
-                        st.markdown("### 🔗 Cross-Reference Check")
+                        st.markdown("### Cross-Reference Check")
                         cross_found = False
                         for w in newly_inserted:
                             if "OVER_SANCTION" not in (w.get("flag") or ""):
@@ -2107,17 +2111,17 @@ with tab2:
                             if matches:
                                 cross_found = True
                                 st.error(
-                                    f"🚨 **{w.get('work_name_full')}** is flagged for a "
+                                    f" **{w.get('work_name_full')}** is flagged for a "
                                     f"{w.get('variance_pct')}% cost overrun, and {len(matches)} "
                                     f"citizen report(s) in the same area describe an issue. "
                                     f"Recommend priority field audit."
                                 )
                         if not cross_found:
-                            st.caption("No cross-referenced discrepancies yet — submit matching citizen reports in the 'Report an Issue' tab to test this.")
+                            st.caption("No cross-referenced discrepancies yet - submit matching citizen reports in the 'Report an Issue' tab to test this.")
                     except Exception as e:
                         show_error(e)
             else:
-                with st.spinner("No sanctioned-works table detected — trying narrative analysis with Gemini..."):
+                with st.spinner("No sanctioned-works table detected - trying narrative analysis with Gemini..."):
                     narrative_data = None
                     try:
                         narrative_data = get_narrative_sanction_data_from_gemini(doc_text)
@@ -2136,7 +2140,7 @@ with tab2:
                     with st.spinner("Trying universal fallback classification..."):
                         fallback_result = None
                         try:
-                            _budget(3)  # classify + extract (+ secondary check)
+                            _budget(3) # classify + extract (+ secondary check)
                             fallback_client = get_gemini_client()
                             fallback_result = process_document(fallback_client, doc_text)
                         except Exception as e:
@@ -2151,9 +2155,9 @@ with tab2:
                         log_processed_document("unreadable", "none", "Fallback classification itself failed.")
                     elif fallback_result.status == "batch_aggregate":
                         st.info(
-                            "📦 This is a real sanction document, but it's a **batch-level** "
+                            "This is a real sanction document, but it's a **batch-level** "
                             "sanction (many works grouped together under category totals) "
-                            "with no per-project completion figure — so no variance "
+                            "with no per-project completion figure - so no variance "
                             "can be computed from it. Logged for document-coverage tracking "
                             "instead of being discarded."
                         )
@@ -2162,7 +2166,7 @@ with tab2:
                             show_kv(fallback_result.data)
                             if secondary and secondary.get("anomaly_found"):
                                 st.warning(
-                                    "🕵️ This same document also names a separate irregularity elsewhere in its text:"
+                                    "This same document also names a separate irregularity elsewhere in its text:"
                                 )
                                 st.write(secondary.get("description", ""))
                                 quoted = secondary.get("quoted_percentage_or_amount")
@@ -2170,12 +2174,12 @@ with tab2:
                                     st.caption(f"Quoted figure from the document: {quoted}")
                         log_processed_document(
                             "batch_aggregate", fallback_result.tier_used,
-                            f"{fallback_result.data.get('state', 'unknown state')} — "
+                            f"{fallback_result.data.get('state', 'unknown state')} - "
                             f"{fallback_result.data.get('scheme', 'unknown scheme')}"
                         )
                     elif fallback_result.status == "narrative_anomaly":
                         st.warning(
-                            "🕵️ No numeric sanctioned-vs-completed pair was found, but the "
+                            "No numeric sanctioned-vs-completed pair was found, but the "
                             "document itself names an irregularity:"
                         )
                         st.write(fallback_result.data.get("description", ""))
@@ -2188,8 +2192,8 @@ with tab2:
                         )
                     elif fallback_result.status == "quota_exceeded":
                         st.error(
-                            "🚦 **Gemini's API quota is exhausted** (likely the free-tier "
-                            "daily request limit) — this is a billing/quota issue, not a "
+                            " **Gemini's API quota is exhausted** (likely the free-tier "
+                            "daily request limit) - this is a billing/quota issue, not a "
                             "problem with this document. It will resolve when the quota "
                             "resets, or immediately with a plan upgrade on this API key."
                         )
@@ -2197,13 +2201,13 @@ with tab2:
                         log_processed_document("quota_exceeded", "none", "Gemini API quota exhausted")
                     elif fallback_result.status == "unreadable":
                         st.error(
-                            "This document's text couldn't be reliably classified — "
+                            "This document's text couldn't be reliably classified - "
                             "either scan quality is too low, or there was a temporary "
                             "API issue. Flagged for manual review rather than guessed at."
                         )
                         st.caption(fallback_result.notes)
                         log_processed_document("unreadable", fallback_result.tier_used, fallback_result.notes)
-                    else:  # no_findings
+                    else: # no_findings
                         st.warning(
                             "Couldn't find a sanctioned-works table, a revision history, "
                             "or a named irregularity in this document. Try a different "
@@ -2238,14 +2242,14 @@ with tab2:
 
                         if extra_result and extra_result.status == "batch_aggregate":
                             st.info(
-                                "📦 Recognized as a batch-level sanction — logged for "
+                                "Recognized as a batch-level sanction - logged for "
                                 "document-coverage tracking, not risk-scored."
                             )
                             if extra_result.data:
                                 secondary = extra_result.data.pop("secondary_narrative_anomaly", None)
                                 show_kv(extra_result.data)
                                 if secondary and secondary.get("anomaly_found"):
-                                    st.warning("🕵️ This same document also names a separate irregularity:")
+                                    st.warning("This same document also names a separate irregularity:")
                                     st.write(secondary.get("description", ""))
                                     quoted = secondary.get("quoted_percentage_or_amount")
                                     if quoted:
@@ -2256,7 +2260,7 @@ with tab2:
                             )
                         elif extra_result and extra_result.status == "narrative_anomaly":
                             st.warning(
-                                "🕵️ This document also names an irregularity found during review:"
+                                "This document also names an irregularity found during review:"
                             )
                             st.write(extra_result.data.get("description", ""))
                             quoted = extra_result.data.get("quoted_percentage_or_amount")
@@ -2290,20 +2294,20 @@ with tab2:
                         entry = next((w for w in st.session_state.sanctioned_works if w["id"] == _nid), entry)
                         st.session_state["last_analysis_ids"] = [entry.get("id")]
                         st.success(
-                            f"✅ Extracted 1 project via narrative analysis — "
+                            f"Extracted 1 project via narrative analysis - "
                             f"{risk_info['num_stages']} sanction stages found."
                         )
                         log_processed_document(
                             "single_project_variance", "tier2_gemini_narrative",
-                            f"{narrative_data.get('project_name')} — {risk_info['num_stages']} stages, "
+                            f"{narrative_data.get('project_name')} - {risk_info['num_stages']} stages, "
                             f"{risk_info['variance_pct']}% variance."
                         )
                         if verified:
-                            st.caption("✅ All extracted amounts independently confirmed present in the source text (deterministic regex check, not Gemini re-asking itself).")
+                            st.caption("All extracted amounts independently confirmed present in the source text (deterministic regex check, not Gemini re-asking itself).")
                         else:
                             st.warning(
-                                f"⚠️ {len(unverified_stages)} of {risk_info['num_stages']} extracted amount(s) "
-                                f"could not be independently matched against numbers in the source text — "
+                                f" {len(unverified_stages)} of {risk_info['num_stages']} extracted amount(s) "
+                                f"could not be independently matched against numbers in the source text - "
                                 f"Gemini may have misread the document. Treat this result with caution and "
                                 f"verify against the original source before trusting the risk score."
                             )
@@ -2339,27 +2343,27 @@ with tab3:
 
     _under = [w for w in st.session_state.sanctioned_works if "UNDER_SPEND" in (w.get("flag") or "")]
     if _under:
-        st.caption(f"⚠️ {len(_under)} work(s) were completed well under their sanction (more than 10% below): possible unfinished work, check on site.")
+        st.caption(f" {len(_under)} work(s) were completed well under their sanction (more than 10% below): possible unfinished work, check on site.")
     render_state_coverage(st.session_state.sanctioned_works)
     pop_in_scope, districts_matched = estimate_population_in_scope(st.session_state.sanctioned_works)
     if pop_in_scope > 0:
         st.markdown(
             f'<div style="text-align:center; margin: 8px 0 20px 0; color:#9ca3af; font-size:13px;">'
-            f'📍 <b style="color:#7ab8ff;">{inr(pop_in_scope)}</b> people live in the districts covered so far '
-            f'({", ".join(d.title() for d in districts_matched)}) — Census 2011 district population, '
+            f' <b style="color:#7ab8ff;">{inr(pop_in_scope)}</b> people live in the districts covered so far '
+            f'({", ".join(d.title() for d in districts_matched)}) - Census 2011 district population, '
             f'not a claim that every resident is directly affected by a specific flagged work.'
             f'</div>',
             unsafe_allow_html=True
         )
 
     st.caption(
-        "ℹ️ Risk levels (overrun: CRITICAL >10%, HIGH >5%, MEDIUM >1%; underspend: HIGH below -25%, MEDIUM below -10%; otherwise LOW) "
+        "ℹ Risk levels (overrun: CRITICAL >10%, HIGH >5%, MEDIUM >1%; underspend: HIGH below -25%, MEDIUM below -10%; otherwise LOW) "
         "are a starting heuristic we chose, not thresholds validated against "
         "historical scheme-specific completion data. A real deployment would "
         "calibrate these per scheme and state."
     )
 
-    if st.button("📄 Prepare Executive Summary PDF"):
+    if st.button("Prepare Executive Summary PDF"):
         try:
             st.session_state["pdf_bytes"] = generate_executive_summary_pdf(
                 st.session_state.citizen_reports, st.session_state.sanctioned_works
@@ -2369,22 +2373,22 @@ with tab3:
             st.error("Couldn't build the PDF from the current data.")
     if st.session_state.get("pdf_bytes"):
         st.download_button(
-            "⬇️ Download Executive Summary PDF",
+            "Download Executive Summary PDF",
             data=st.session_state["pdf_bytes"],
             file_name="pragatitrace_executive_summary.pdf",
             mime="application/pdf",
         )
 
-    if st.button("🤖 Generate AI Policy Insight"):
+    if st.button("Generate AI Policy Insight"):
         if not st.session_state.citizen_reports and not st.session_state.sanctioned_works:
-            st.warning("No data yet — load sample data or submit reports first.")
+            st.warning("No data yet - load sample data or submit reports first.")
         else:
             with st.spinner("Gemini is synthesizing an insight from the current data..."):
                 try:
                     insight = generate_policy_insight(
                         st.session_state.citizen_reports, st.session_state.sanctioned_works
                     )
-                    st.info(f"🤖 **AI Policy Insight:** {insight}")
+                    st.info(f" **AI Policy Insight:** {insight}")
                 except Exception as e:
                     show_error(e)
 
@@ -2450,9 +2454,9 @@ with tab3:
             # sessions hit it. This is what actually stops the blocked
             # DLL from silently slowing down every action in the app.
             for p in map_points:
-                dot = "🔴" if p["color"][0] == 255 else "🟢"
-                st.write(f"{dot} {p['label']} — ({p['lat']:.4f}, {p['lon']:.4f})")
-            st.caption("Map disabled on this machine (blocked dependency, tested once at startup) — showing plain list instead.")
+                dot = "" if p["color"][0] == 255 else ""
+                st.write(f"{dot} {p['label']} - ({p['lat']:.4f}, {p['lon']:.4f})")
+            st.caption("Map disabled on this machine (blocked dependency, tested once at startup) - showing plain list instead.")
         else:
             try:
                 import pandas as pd
@@ -2470,29 +2474,29 @@ with tab3:
                     layers=[layer], initial_view_state=view_state,
                     map_style=None, tooltip={"text": "{label}"}
                 ))
-                st.caption("🔴 Flagged for review · 🟢 Within tolerance — approximate: villages are plotted near their district centre")
+                st.caption("Flagged for review · Within tolerance - approximate: villages are plotted near their district centre")
             except Exception as e:
                 # Belt-and-suspenders: even though check_map_dependencies_available()
                 # should have already caught this, don't let anything here
                 # crash the dashboard.
                 st.warning(
                     "The map couldn't render (likely a local security/DLL "
-                    "restriction, not an app bug) — showing the same "
+                    "restriction, not an app bug) - showing the same "
                     "locations as a plain list instead."
                 )
                 for p in map_points:
-                    dot = "🔴" if p["color"][0] == 255 else "🟢"
-                    st.write(f"{dot} {p['label']} — ({p['lat']:.4f}, {p['lon']:.4f})")
+                    dot = "" if p["color"][0] == 255 else ""
+                    st.write(f"{dot} {p['label']} - ({p['lat']:.4f}, {p['lon']:.4f})")
                 st.caption(f"Technical detail: {e}")
 
     st.markdown("### Flagged Sanctioned Works")
     if not flagged:
-        st.caption("No works flagged for review yet — analyze a document in the second tab.")
+        st.caption("No works flagged for review yet - analyze a document in the second tab.")
     render_grid(flagged, render_work_card, "flagged")
 
     st.markdown("### Citizen Reports (highest priority first)")
     if not st.session_state.citizen_reports:
-        st.caption("No reports yet — submit one in the first tab.")
+        st.caption("No reports yet - submit one in the first tab.")
     SEVERITY_ORDER = {"high": 0, "medium": 1, "low": 2}
     sorted_reports = sorted(
         reversed(st.session_state.citizen_reports),
@@ -2500,7 +2504,7 @@ with tab3:
     )
     render_grid(sorted_reports, render_report_card, "reports")
 
-    st.markdown("### 📚 Document Coverage")
+    st.markdown("### Document Coverage")
     total_docs, shape_counts, recent_docs = get_document_coverage_stats()
     total_verified_amounts, verified_count = get_verification_stats()
 
@@ -2520,27 +2524,27 @@ with tab3:
             + ", ".join(f"{shape} ({n})" for shape, n in shape_counts.items())
         )
         st.caption(
-            "This count grows every time a real document is analyzed in the 'Check a Sanction Order' tab — "
+            "This count grows every time a real document is analyzed in the 'Check a Sanction Order' tab - "
             "including batch-level and narrative-anomaly documents that don't "
             "produce a risk score but are still logged, not discarded."
         )
     else:
-        st.caption("No documents analyzed yet this session — try Tab 2 with a real sanction order.")
+        st.caption("No documents analyzed yet this session - try Tab 2 with a real sanction order.")
 
-    with st.expander("🔍 Recent documents processed"):
+    with st.expander("Recent documents processed"):
         if not recent_docs:
             st.caption("Nothing logged yet.")
         for d in recent_docs:
-            st.write(f"**{d['detected_shape']}** — {d['summary']}")
+            st.write(f"**{d['detected_shape']}** - {d['summary']}")
 
-    with st.expander("⚠️ Known limitations"):
+    with st.expander("Known limitations"):
         st.markdown("""
-- **Tested on real documents from 2 states** (Tamil Nadu, Himachal Pradesh) plus one narrative-anomaly pattern — not yet validated across all Indian states, despite similar document formats existing nationally.
+- **Tested on real documents from 2 states** (Tamil Nadu, Himachal Pradesh) plus one narrative-anomaly pattern - not yet validated across all Indian states, despite similar document formats existing nationally.
 - **Risk thresholds are a starting heuristic** we chose (see caption above), not calibrated against historical scheme-specific completion data.
-- **The audit ledger demonstrates a hash-chaining mechanism**, not production-grade tamper resistance — the chain currently lives in the same storage as the data it protects. A real deployment would anchor hashes in an external, write-once log.
+- **The audit ledger demonstrates a hash-chaining mechanism**, not production-grade tamper resistance - the chain currently lives in the same storage as the data it protects. A real deployment would anchor hashes in an external, write-once log.
 - **No consent or data-retention policy** is built for citizen-submitted voice/text complaints yet.
 - **Field verification is a manual logging tool**, not live satellite or computer-vision analysis.
-- **Session/local database only** — not a multi-user production system. Export/import (sidebar) is the current workaround for portability.
+- **Session/local database only** - not a multi-user production system. Export/import (sidebar) is the current workaround for portability.
 """)
 
 with tab4:
@@ -2573,28 +2577,28 @@ with tab4:
             gap = claimed_pct - observed_pct
             insert_field_verification(proj_name.strip(), claimed_pct, observed_pct, (fv_note or "").strip(), fv_officer.strip())
             if gap > 15:
-                st.error(f"🚨 {gap}% gap between claim and field observation — flag for review.")
+                st.error(f" {gap}% gap between claim and field observation - flag for review.")
             elif gap < 0:
-                st.info(f"Field observation is {abs(gap)}% ahead of the claim — nothing to flag.")
+                st.info(f"Field observation is {abs(gap)}% ahead of the claim - nothing to flag.")
             else:
-                st.success(f"✅ {gap}% gap — within acceptable tolerance.")
+                st.success(f" {gap}% gap - within acceptable tolerance.")
 
     _fvs = get_field_verifications(20)
     if _fvs:
         _chain_ok, _chain_n = verify_field_verification_chain()
         st.markdown("### Logged verifications")
         if _chain_n:
-            st.caption(("✅ Log integrity verified — no entries altered." if _chain_ok else
-                        "🚨 Log integrity check FAILED — an entry may have been altered.") +
+            st.caption(("Log integrity verified - no entries altered." if _chain_ok else
+                        "Log integrity check FAILED - an entry may have been altered.") +
                        " (Hash-chain prototype, same mechanism as the sanction-order ledger below.)")
         for v in _fvs:
             _g = v["claimed_pct"] - v["observed_pct"]
-            st.write(f"**{v['project']}** — claimed {v['claimed_pct']}% vs observed {v['observed_pct']}% (gap: {_g}%)"
-                     + (f" — {v['note']}" if v.get("note") else "")
+            st.write(f"**{v['project']}** - claimed {v['claimed_pct']}% vs observed {v['observed_pct']}% (gap: {_g}%)"
+                     + (f" - {v['note']}" if v.get("note") else "")
                      + (f" · verified by {v['verified_by']}" if v.get("verified_by") else " · verifier not recorded"))
 
     st.markdown("---")
-    st.markdown("### 📋 Officer escalation brief")
+    st.markdown("### Officer escalation brief")
     n_flagged_total = len([w for w in st.session_state.sanctioned_works if "OVER_SANCTION" in (w.get("flag") or "")])
     total_variance = sum(
         (w.get("completion_report_amount") or 0) - (w.get("administrative_sanction") or 0)
@@ -2610,10 +2614,10 @@ with tab4:
         f"Total flagged variance amount: Rs.{inr(total_variance, 2)}\n"
     )
     st.code(brief, language="text")
-    st.download_button("📥 Download brief (.txt)", data=brief, file_name="pragatitrace_brief.txt", mime="text/plain")
+    st.download_button("Download brief (.txt)", data=brief, file_name="pragatitrace_brief.txt", mime="text/plain")
 
     st.markdown("---")
-    st.markdown("### 🔐 Audit Ledger (Hash-Chain Pattern)")
+    st.markdown("### Audit Ledger (Hash-Chain Pattern)")
     st.caption(
         "Prototype of the hash-chaining pattern used in real tamper-evident audit systems: "
         "each flagged work's hash includes the previous record's hash (SHA-256), so editing "
@@ -2629,13 +2633,47 @@ with tab4:
         ledger = build_ledger(flagged_for_ledger)
         is_valid = verify_ledger(ledger)
         if is_valid:
-            st.success("✅ Hash chain consistent (prototype — see limitations).")
+            st.success("Hash chain consistent (prototype - see limitations).")
         else:
-            st.error("🚨 Ledger integrity check FAILED — a record may have been altered.")
+            st.error("Ledger integrity check FAILED - a record may have been altered.")
 
         for i, block in enumerate(ledger):
             st.markdown(
-                f"**Block {i+1}:** {block['entry']['work']}  \n"
-                f"`hash: {block['hash'][:24]}...`  \n"
+                f"**Block {i+1}:** {block['entry']['work']} \n"
+                f"`hash: {block['hash'][:24]}...` \n"
                 f"`prev: {block['prev_hash'][:24]}...`"
             )
+
+with tab5:
+    st.subheader("Privacy Policy")
+    st.caption("Placeholder policy for this prototype. Replace with a reviewed policy before any public or production launch.")
+    st.markdown(
+        "**What is collected:** citizen reports (text and voice), uploaded sanction "
+        "documents, and session data, stored in this app's local database.\n\n"
+        "**How it is processed:** voice recordings and document text are sent to "
+        "Google's Gemini API for transcription, classification, and extraction.\n\n"
+        "**Retention:** no retention limit or deletion mechanism is implemented yet. "
+        "Data persists in the local database until manually cleared.\n\n"
+        "**Third parties:** Google Gemini API is the only third-party processor used.\n\n"
+        "**Contact:** add a real contact method here before launch.\n\n"
+        "This is a hackathon prototype. Do not submit real personal or "
+        "identifying information until a reviewed privacy policy is in place."
+    )
+
+with tab6:
+    st.subheader("Terms and Conditions")
+    st.caption("Placeholder terms for this prototype. Replace with reviewed terms before any public or production launch.")
+    st.markdown(
+        "**Purpose:** this app is a prototype for cross-checking citizen-reported "
+        "infrastructure issues against government sanction records.\n\n"
+        "**No warranty:** results are generated by an AI model and deterministic "
+        "checks on available documents. They are not verified findings and must "
+        "not be treated as an official audit or legal conclusion.\n\n"
+        "**Accuracy:** extracted amounts, variances, and risk levels may contain "
+        "errors from OCR, document parsing, or model output. Always verify "
+        "against the original source document.\n\n"
+        "**Acceptable use:** do not use this app to make defamatory claims "
+        "against any individual or contractor without independent verification.\n\n"
+        "**Changes:** these terms may change without notice while this remains "
+        "a prototype."
+    )
