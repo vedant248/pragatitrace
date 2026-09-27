@@ -180,13 +180,13 @@ Being upfront about what this is (a hackathon prototype) and isn't
 
 ## Demo video
 
-[Add link here]
+https://drive.google.com/file/d/18MyoMQNXLfgWJ2WjmAikZjrzFsizg4dc/view?usp=drivesdk
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT [LICENSE](LICENSE).
 
 ## Team
 
-Team PragatiTrace — *Build with AI: Code for Communities, Google Cloud
+Team PragatiTrace - *Build with AI: Code for Communities, Google Cloud
 Hackathon*
