@@ -2,7 +2,7 @@
 
 **Citizen complaints, checked against the government's own sanction orders.**
 
-Built for **Build with AI: Code for Communities — Google Cloud Hackathon**
+Built for **Build with AI: Code for Communities - Google Cloud Hackathon**
 Track: *Constituency Development Planning*
 
 प्रगति (*pragati*) means progress.
@@ -12,22 +12,22 @@ Track: *Constituency Development Planning*
 ## The problem
 
 India's rural works schemes move enormous sums through thousands of small,
-local sanction orders — and almost none of them are ever checked against
+local sanction orders and almost none of them are ever checked against
 what a citizen actually sees on the ground. A villager can see a pothole.
 A district officer has a filing cabinet of sanction orders. Nobody
 routinely puts the two side by side.
 
 ## What PragatiTrace does
 
-1. **Hear** — A citizen reports a problem by voice or text, in any Indian
+1. **Hear** - A citizen reports a problem by voice or text, in any Indian
    language. Gemini transcribes and classifies it into a structured
    complaint (issue type, location, severity).
-2. **Read** — The app ingests real government sanction/completion
+2. **Read** - The app ingests real government sanction/completion
    documents (PMGSY, JJM, or similar) — typed tables, scanned PDFs, or
-   narrative text — and extracts the numbers.
-3. **Connect** — Complaints are matched to the sanctioned work for that
+   narrative text - and extracts the numbers.
+3. **Connect** - Complaints are matched to the sanctioned work for that
    village, and any work whose completion amount deviates from its
-   sanction is flagged for audit — with every number checked back against
+   sanction is flagged for audit with every number checked back against
    the source text before it's trusted.
 
 The result is a single dashboard a district officer can use to see which
@@ -41,14 +41,14 @@ every document a verdict instead of silently failing:
 
 | Status | Meaning |
 |---|---|
-| `variance_pair` | Classic sanctioned-vs-completed pair found — risk score computed |
+| `variance_pair` | Classic sanctioned-vs-completed pair found risk score computed |
 | `narrative_anomaly` | No clean numeric pair, but the text itself names an irregularity (cost inflation, delay, action ordered) |
-| `batch_aggregate` | A real sanction, but batch-level with no completion data — logged as coverage, not scored |
-| `unreadable` | OCR/text extraction failed or text too sparse to say anything — flagged for manual review |
-| `no_findings` | Readable, but nothing matches a known pattern — flagged for manual review, not discarded |
-| `quota_exceeded` | Gemini's API quota is exhausted — distinct from a document problem |
+| `batch_aggregate` | A real sanction, but batch-level with no completion data logged as coverage, not scored |
+| `unreadable` | OCR/text extraction failed or text too sparse to say anything flagged for manual review |
+| `no_findings` | Readable, but nothing matches a known pattern flagged for manual review, not discarded |
+| `quota_exceeded` | Gemini's API quota is exhausted distinct from a document problem |
 
-Nothing in the pipeline ever raises an unhandled exception out to the UI —
+Nothing in the pipeline ever raises an unhandled exception out to the UI 
 every path returns a result the app can render.
 
 ### What Gemini does vs. what deterministic code does
@@ -63,21 +63,21 @@ every path returns a result the app can render.
   hash so a document is never re-processed unnecessarily.
 
 Built to keep running: automatic model fallback across Gemini model
-variants, timeouts on every call, and retries only for transient errors —
+variants, timeouts on every call, and retries only for transient errors 
 with a hard per-session call budget so one runaway session can't exhaust
 the API key.
 
 ## Tech stack
 
-- **Streamlit** — UI and app framework
-- **Google Gemini API** (`google-genai`) — transcription, classification,
+- **Streamlit** - UI and app framework
+- **Google Gemini API** (`google-genai`) - transcription, classification,
   document understanding, narrative synthesis
-- **pdfplumber / pypdf** — PDF text extraction
-- **SQLite** — local persistence for citizen reports, sanctioned works,
+- **pdfplumber / pypdf** - PDF text extraction
+- **SQLite** - local persistence for citizen reports, sanctioned works,
   document coverage, and field verifications
-- **ReportLab** — generates the one-click PDF briefing for a collector/MP's
+- **ReportLab** - generates the one-click PDF briefing for a collector/MP's
   office
-- **pandas / pydeck** — map view of flagged works by location
+- **pandas / pydeck** - map view of flagged works by location
 
 ## Demo data
 
